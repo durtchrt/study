@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"html/template"
+	"regexp"
 )
 
 type Page struct {
@@ -12,49 +13,70 @@ type Page struct {
 	Body []byte
 }
 
+var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+
 
 func main() {
-	http.HandleFunc("/edit/", editHandler)
-	http.HandleFunc("/view/", viewHandler)
-	http.HandleFunc("/save/", saveHandler)
+	http.HandleFunc("/edit/", makeHandler(editHandler))
+	http.HandleFunc("/view/", makeHandler(viewHandler))
+	http.HandleFunc("/save/", makeHandler(saveHandler))
 	http.ListenAndServe(":9999", nil)
 }
 
-func viewHandler(w http.ResponseWriter, r *http.Request) {
-	title := r.URL.Path[len("/view/"):]
+func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
+	//title, err := getTitle(w, r)
+	//if err != nil {
+	//
+	//}
 	p, err := loadPage(title)
 	if err != nil {
-		fmt.Fprint(w, "<h1>invalid path</h1>")
+		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
 		return
 	}
 	renderTemplate(w, "view", p)
 }
 
-func editHandler(w http.ResponseWriter, r *http.Request) {
-	title := r.URL.Path[len("/edit/"):]
+func editHandler(w http.ResponseWriter, r *http.Request, title string) {
+	//title, err := getTitle(w, r)
+	//if err != nil {
+	//	return
+	//}
 	p, err := loadPage(title)
 	if err != nil {
 		p = &Page{Title: title}
+		return
 	}
 	renderTemplate(w, "edit", p)
 
 }
 
-func saveHandler(w http.ResponseWriter, r *http.Request) {
-	title := r.URL.Path[len("/save/"):]
+func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
+	//title, err := getTitle(w, r)
+	//if err != nil {
+	//	return
+	//}
 	body := r.FormValue("body")
 	p := &Page{Title:title, Body: []byte(body)}
 	err := p.save()
 	if err != nil {
-		fmt.Fprintf(w, "fail to save")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	http.Redirect(w, r, "/view/"+title, 301)
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	t, _ := template.ParseFiles(tmpl + ".html")
-	t.Execute(w, p)
+	err := templates.ExecuteTemplate(w, tmpl + ".html", p)
+	//t, err := template.ParseFiles(tmpl + ".html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	//err = t.Execute(w,p)
+	//if err != nil {
+	//	http.Error(w, err.Error(), http.StatusInternalServerError)
+	//}
 }
 
 func (p *Page) save() error {
@@ -70,4 +92,24 @@ func loadPage(title string) (*Page, error) {
 		return nil, err
 	}
 	return &Page{Title: title, Body: body}, nil
+}
+
+//func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
+//	m := validPath.FindStringSubmatch(r.URL.Path)
+//	if m == nil {
+//		http.NotFound(w, r)
+//		return "", errors.New("Invalid Page Title")
+//	}
+//	return m[2], nil
+//}
+
+func makeHandler(fn func (http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request){
+		m := validPath.FindStringSubmatch(r.URL.Path)
+		if m == nil {
+			http.NotFound(w, r)
+			return
+		}
+		fn(w, r, m[2])
+	}
 }
