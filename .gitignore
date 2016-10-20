@@ -33,3 +33,6 @@ vendor/
 *.iml
 .vscode/
 
+**/node_modules/
+**/build/
+
