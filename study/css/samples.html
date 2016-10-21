@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      h1,a{border:1px solid red;}
+      h1{display: block;}
+      a{display:inline;} /* inline에서는 width값이 무시가됨.  */
+      p, a {
+        border: 10px solid red;
+        padding: 20px;
+        margin: 5px;
+        width: 120px;
+      }
+      *{
+            box-sizing: border-box;
+        }
+        div{
+            margin:10px;
+            width:150px;
+            border: 1px solid tomato;
+        }
+        #small{
+            border:10px solid black;
+        }
+        #large{
+            border:30px solid black;
+        }
+        h2 {
+          border: 1px solid red;
+          margin:100px;
+        }
+         #parent{
+            /* border:1px solid tomato; */
+            margin-top:100px;
+        }
+        #child{
+            background-color: powderblue;
+            margin-top:50px;
+        }
+        #p1_me{
+          position: relative;
+          left:100px;
+          top:100px;
+        }
+        #p2_parent, #p2_other, #p2_grand{
+            border:5px solid tomato;
+        }
+        #p2_grand{
+            position: relative;
+        }
+        #p2_me{
+            background-color: black;
+            color:white;
+            position: absolute;
+            left:0;
+            top:0;
+        }
+        
+        #p3_parent, #p3_other{
+            border:5px solid tomato;
+        }
+        #p3_large{
+            height:1000px;
+            background-color: tomato;
+        }
+        #p3_me{
+            background-color: black;
+            color:white;
+            position: fixed;
+            left:0;
+            top:0;
+            text-align: center;
+        }
+        .container {
+          background-color: powderblue;
+          width: 400px;
+          height: 400px;
+          display: flex;
+          flex-direction: row;
+        }
+        .item {
+          background-color: tomato;
+          color: white;
+          border: 1px solid white;
+          flex-grow: 1;
+        }
+        .item:nth-child(1){
+            flex-basis: 50px;
+            flex-shrink: 0;
+        }
+        .item:nth-child(2){
+            flex-basis: 50px;
+           flex-shrink: 2;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Hello world</h1>
+    안녕하세요 <a href="http://facebook.com/durtchrt">엯촋</a>입니다.
+    <p>Hello World</p>
+    <p>Hello World</p>
+    <div id="small">Hello</div>
+    <div id="large">Hello</div>  
+    <h2>Hello world</h2>
+    <h2>Hello world</h2>
+    
+    <div id="parent">
+        <div id="child">
+            Hello world
+        </div>
+    </div>
+    <div id="p1_other">other</div>
+    <div id="p1_parent">
+       parent
+       <div id="p1_me">me11</div>
+    </div>
+    <div id="p2_other">other</div>
+    <div id="p2_grand">
+       grand
+        <div id="p2_parent">
+           parent
+           <div id="p2_me">me</div>
+        </div>
+    </div>
+    <div id="p3_other">other</div>
+    <div id="p3_parent">
+       parent
+       <div id="p3_me">me</div>
+    </div>
+    <div id="p3_large">large</div>
+    <div class="container">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+    </div>
+  </body>
+</html>
