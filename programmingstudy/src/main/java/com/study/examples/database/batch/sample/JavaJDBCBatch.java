@@ -1,11 +1,7 @@
-package com.study.examples.database.batch;
+package com.study.examples.database.batch.sample;
 
 import java.sql.*;
-import java.util.function.*;
 
-/**
- * Created by james.boo on 2016. 11. 8..
- */
 public class JavaJDBCBatch {
 	public static void main(String[] args) {
 		String url = "jdbc:mysql://10.28.167.99:3306/chanel_dev?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -17,8 +13,10 @@ public class JavaJDBCBatch {
 			long start = System.currentTimeMillis();
 
 			try(Statement s = conn.createStatement()) {
-				s.executeUpdate("drop table content2");
-				s.executeUpdate("create table content2 like content");
+				int i = s.executeUpdate("drop table content2");
+				int i1 = s.executeUpdate("create table content2 like content");
+				System.out.println("i: " + i);
+				System.out.println("i1: " + i1);
 				s.executeUpdate("insert into content2 select * from content");
 				s.executeUpdate("alter table `content2` add column `approved_order` INT NOT NULL DEFAULT 0 AFTER `approved_at`");
 			} catch (Exception e) {
