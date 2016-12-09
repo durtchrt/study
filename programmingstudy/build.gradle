@@ -19,5 +19,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile('org.springframework.boot.experimental:spring-boot-starter-web-reactive:0.1.0.BUILD-SNAPSHOT') //{
+    compile('org.springframework.boot.experimental:spring-boot-starter-web-reactive:0.1.0.BUILD-SNAPSHOT')
+    compile('org.reactivestreams:reactive-streams:1.0.0')
+    compile('org.reactivestreams:reactive-streams-tck:1.0.0')
 }
