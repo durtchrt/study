@@ -1,4 +1,4 @@
-package com.programming.study.toby.p20161203.p05;
+package com.programming.study.toby.p20161203.p08;
 
 import lombok.extern.slf4j.*;
 import org.reactivestreams.*;
@@ -7,7 +7,8 @@ import java.util.function.*;
 import java.util.stream.*;
 
 /**
- *
+ *   refactoring used by Generic
+ *   -> p07에서처럼 타입을 먼저 줘보고 generic 타입으로 변경하는게 수월함 - 완전 꿀팁!!!
  *
  */
 
@@ -15,26 +16,22 @@ import java.util.stream.*;
 public class PubSub {
 	public static void main(String[] args) {
 		Publisher<Integer> publisher = iterPub(Stream.iterate(1, a -> a + 1 ).limit(10).collect(Collectors.toList()));
-		Publisher<Integer> mapPub2 = reducePub(publisher, 0, (BiFunction<Integer, Integer, Integer>)(a, b) -> a+b);
-		mapPub2.subscribe(logSub());
+//		Publisher<String> reducePub =  reducePub(publisher, "", (a, b) -> a + "-"+  b);
+		Publisher<StringBuilder> reducePub =  reducePub(publisher, new StringBuilder(), (a, b) -> a.append(b + ","));
+		reducePub.subscribe(logSub());
 	}
 
-	// 1,2,3,4,5
-	// 0 -> (0,1) -> 0+ 1 =1
-	// 1 -> (1,2) -> 1 + 2 = 3
-	// 3 -> (3,3) -> 3 + 3 = 6
-	// 6 -> (6,4) -> 6 + 4 = 10
-	// 10 -> (10,5) -> 10 + 5 = 15
 
-	private static Publisher<Integer> reducePub(Publisher<Integer> publisher, int init, BiFunction<Integer, Integer, Integer> bf) {
-		return new Publisher<Integer>() {
+
+	private static <T, R> Publisher<R> reducePub(Publisher<T> publisher, R init, BiFunction<R, T, R> bf) {
+		return new Publisher<R>() {
 			@Override
-			public void subscribe(Subscriber<? super Integer> sub) {
-				publisher.subscribe(new DelegateSub("reducSub", sub){
-					int result = init;
+			public void subscribe(Subscriber<? super R> sub) {
+				publisher.subscribe(new DelegateSub<T, R>("reducSub", sub){
+					R result = init;
 
 					@Override
-					public void onNext(Integer i) {
+					public void onNext(T i) {
 						result = bf.apply(result, i);
 					}
 
@@ -48,8 +45,24 @@ public class PubSub {
 		};
 	}
 
-	private static Subscriber<Integer> logSub() {
-		return new Subscriber<Integer>() {
+
+	private static <T, R> Publisher<R> mapPub(Publisher<T> pub, Function<T, R> f) {
+		return new Publisher<R>() {
+			@Override
+			public void subscribe(Subscriber<? super R> sub) {
+				pub.subscribe(new DelegateSub<T, R>("mapPub", sub){
+					@Override
+					public void onNext(T i) {
+						sub.onNext(f.apply(i));
+					}
+				});
+
+			}
+		};
+	}
+
+	private static <T> Subscriber<T> logSub() {
+		return new Subscriber<T>() {
 			@Override
 			public void onSubscribe(Subscription s) {
 				log.debug("logSub onSubscribe:");
@@ -57,8 +70,8 @@ public class PubSub {
 			}
 
 			@Override
-			public void onNext(Integer integer) {
-				log.debug("logSub onNext:" + integer);
+			public void onNext(T i) {
+				log.debug("logSub onNext:" + i);
 			}
 
 			@Override
