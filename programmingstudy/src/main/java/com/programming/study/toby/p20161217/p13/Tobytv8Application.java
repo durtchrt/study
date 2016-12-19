@@ -16,7 +16,7 @@ import lombok.extern.slf4j.*;
 @SpringBootApplication
 @Slf4j
 @EnableAsync
-public class Tobytv8Application extends AsyncConfigurerSupport {
+public class Tobytv8Application {
 
     @RestController
     public static class  MyController {
@@ -26,9 +26,8 @@ public class Tobytv8Application extends AsyncConfigurerSupport {
         public Callable<String> async() throws InterruptedException {
             log.info("callable");
             return () -> {
-                log.info("sleep before");
+                log.info("sleep 2000 millisecond");
                 Thread.sleep(2000);
-                log.info("sleep after");
                  return "hello";
             };
         }
