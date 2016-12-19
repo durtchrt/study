@@ -15,10 +15,18 @@ import lombok.extern.slf4j.*;
 @SpringBootApplication
 @Slf4j
 public class Tobytv8Application {
+    /**
+      *
+      *  Service에 @Async 추가한 예 - 기대와 다르게 main Thread에서 동작함
+      *
+      */
+
     @Component
     public static class MyService {
+        @Async
         public String hello() throws InterruptedException {
             TimeUnit.SECONDS.sleep(1);
+            log.info("Async hello()");  // @Async를 줘도 main thread에서 실행됨. - @EnableAsync가 필요함.
             return "hello";
         }
 
@@ -26,9 +34,7 @@ public class Tobytv8Application {
 
     public static void main(String[] args) {
         log.debug("hello()");
-        try (ConfigurableApplicationContext c = SpringApplication.run(Tobytv8Application.class, args)) {
-
-        }
+        try (ConfigurableApplicationContext c = SpringApplication.run(Tobytv8Application.class, args)) { }
     }
 
     @Autowired MyService myService;

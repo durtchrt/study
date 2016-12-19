@@ -17,27 +17,25 @@ import lombok.extern.slf4j.*;
 @Slf4j
 @EnableAsync
 public class Tobytv8Application {
+    /**
+     *  Callback 처리를 위한 ListenableFuture 사용 예.
+     */
+
     @Component
     public static class MyService {
-        // TODO: 2016. 12. 17.
-        // @EnableAsync을 사용해도 thread가 main에서 실행됨.
-        // 확인 필요
-
-        // ListenableFuture - spring 4.0부터 사용 가능
+        // ListenableFuture - spring 4.0부터 사용 가능  =>  Future 결과를 Callback 처리할 수 있음.
         // java8의 CompletableFuture 아주 매력적이라고함.
-        @Async    // <- @Async는 요청때마다 쓰레드를 만들어서 비효율적임
+        @Async    // <- @Async는 요청때마다 쓰레드를 만들어서 비효율적임 -> TaskExecutor bean을 등록해주면 스프링이 자동으로 exeuctor를 사용한다
         public ListenableFuture<String> hello() throws InterruptedException {
             TimeUnit.SECONDS.sleep(1);
+            log.info("Async hello()");
             return new AsyncResult<>("hello");
         }
 
     }
 
     public static void main(String[] args) {
-        log.debug("hello()");
-        try (ConfigurableApplicationContext c = SpringApplication.run(Tobytv8Application.class, args)) {
-
-        }
+        try (ConfigurableApplicationContext c = SpringApplication.run(Tobytv8Application.class, args)) { }
     }
 
     @Autowired MyService myService;
@@ -47,7 +45,7 @@ public class Tobytv8Application {
         return args -> {
             log.info("run()");
             ListenableFuture<String> f = myService.hello();
-            f.addCallback(s -> log.info(s), e -> log.info(e.getMessage()));
+            f.addCallback(s -> log.info("success callback: " + s), e -> log.info("error callback: " + e.getMessage()));
             log.info("exit");
         };
     }

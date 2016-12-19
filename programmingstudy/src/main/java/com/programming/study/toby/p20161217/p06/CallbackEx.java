@@ -7,6 +7,12 @@ import lombok.extern.slf4j.*;
 
 @Slf4j
 public class CallbackEx {
+    /**
+     *
+     * Callback 예제  - 성공일때만 다룸
+     *
+     */
+
     interface SuccessCallback {
         void onSuccess(String result);
     }

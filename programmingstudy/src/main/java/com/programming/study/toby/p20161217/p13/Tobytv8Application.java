@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.scheduling.annotation.*;
+import org.springframework.scheduling.concurrent.*;
 import org.springframework.stereotype.*;
 import org.springframework.util.concurrent.*;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +16,19 @@ import lombok.extern.slf4j.*;
 @SpringBootApplication
 @Slf4j
 @EnableAsync
-public class Tobytv8Application {
+public class Tobytv8Application extends AsyncConfigurerSupport {
 
     @RestController
     public static class  MyController {
         @Autowired MyService myService;
 
-        // TODO: 2016. 12. 17.
-        // 제대로 동작 안하는 듯 수정!!!
-        // 1시간 40분쯤
-
         @GetMapping("/async")
         public Callable<String> async() throws InterruptedException {
             log.info("callable");
             return () -> {
+                log.info("sleep before");
                 Thread.sleep(2000);
+                log.info("sleep after");
                  return "hello";
             };
         }

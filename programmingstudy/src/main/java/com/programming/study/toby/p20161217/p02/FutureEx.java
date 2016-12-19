@@ -6,6 +6,10 @@ import lombok.extern.slf4j.*;
 
 @Slf4j
 public class FutureEx {
+   /**
+     *   Future 사용법
+     *
+     */
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         ExecutorService es = Executors.newCachedThreadPool();
 
