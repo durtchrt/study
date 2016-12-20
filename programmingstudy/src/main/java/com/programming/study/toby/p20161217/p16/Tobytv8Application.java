@@ -18,7 +18,7 @@ import lombok.extern.slf4j.*;
 
 @SpringBootApplication
 @Slf4j
-//@EnableAsync
+@EnableAsync
 public class Tobytv8Application {
 
     @RestController
