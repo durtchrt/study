@@ -1,0 +1,15 @@
+{
+  "name": "embed",
+  "version": "0.0.1",
+  "description": "",
+  "author": "durtchrt<durtchrt@gmail.com>",
+  "bin": { "module-name": "./bin/embed" },
+  "scripts": {
+    "start": "node src/embed.js"
+  },
+  "main": "src/embed.js",
+  "keywords": [],
+  "dependencies": { },
+  "devDependencies": { },
+  "license": "MIT"
+}
