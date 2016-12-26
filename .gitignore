@@ -4,3 +4,5 @@ build/
 target/
 *.iml
 tomcat.8080/
+**/.vscode/
+
