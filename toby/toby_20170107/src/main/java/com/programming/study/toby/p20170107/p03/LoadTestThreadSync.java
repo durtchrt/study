@@ -18,7 +18,7 @@ public class LoadTestThreadSync {
         RestTemplate rt = new RestTemplate();
         String url = "http://localhost:8080/rest?idx={idx}";
 
-        CyclicBarrier barrier = new CyclicBarrier(100);
+        CyclicBarrier barrier = new CyclicBarrier(101);
 
         StopWatch main = new StopWatch();
         main.start();
