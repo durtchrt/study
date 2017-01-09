@@ -18,14 +18,16 @@ public class RemoteService {
         @GetMapping("/service")
         public String serivce(String req) throws InterruptedException {
             log.info("--> {}", req);
-            TimeUnit.SECONDS.sleep(2);
+//            TimeUnit.SECONDS.sleep(2);
+            Thread.sleep(2000);
             return req + "/service1"; //text/html
         }
 
         @GetMapping("/service2")
         public String serivce2(String req) throws InterruptedException {
             log.info("--> {}", req);
-            TimeUnit.SECONDS.sleep(2);
+//            TimeUnit.SECONDS.sleep(2);
+            Thread.sleep(2000);
             return req + "/service"; //text/html
         }
     }

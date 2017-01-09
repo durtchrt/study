@@ -38,71 +38,76 @@ public class Tobytv010Application {
             Completion
                     .from(rt.getForEntity(URL1, String.class, "hello" + idx))
                     .andApply(s -> rt.getForEntity(URL2, String.class, s.getBody()))
-                    .andApply(s -> myService.work(s.getBody()))
+//                    .andApply(s -> myService.work(s.getBody()))
                     .andError(e -> dr.setErrorResult(e.toString()))
-                    //TODO
                     .andAccept(s -> dr.setResult(s.getBody()));
-            // 콜백대신 체이닝을 사용해서 같은 계층으로 처리
-
-
-
-
-//            ListenableFuture<ResponseEntity<String>> f1 = rt.<String>getForEntity(URL1, String.class, "hello" + idx);
-
-//            f1.addCallback( s-> {
-//                ListenableFuture<ResponseEntity<String>> f2 = rt.<String>getForEntity(URL2, String.class, s.getBody());
-//                f2.addCallback(s2 -> {
-//                    ListenableFuture<String> f3 = myService.work(s2.getBody());
-//                    f3.addCallback(s3 -> {
-//                        dr.setResult(s3);
-//                    }, e -> {
-//                        dr.setErrorResult(e.getMessage());
-//                    });
-//
-//                }, e-> {
-//                    dr.setErrorResult(e.getMessage());
-//                });
-//            }, e-> {
-//                dr.setErrorResult(e.getMessage());
-//            });
             return dr;
         }
     }
 
-    public static class Completion<S, T> {
-        Completion next;
+
+    public static class AcceptCompletion extends Completion {
         Consumer<ResponseEntity<String>> con;
-        Function<ResponseEntity<String>, ListenableFuture<ResponseEntity<String>>> fn;
-
-        public Completion() { }
-
-        public Completion(Consumer<ResponseEntity<String>> con) {
+        public AcceptCompletion(Consumer<ResponseEntity<String>> con) {
             this.con = con;
         }
+        @Override
+        void run(ResponseEntity<String> value) {
+            con.accept(value);
+        }
+    }
 
-        public Completion(Function<ResponseEntity<String>, ListenableFuture<ResponseEntity<String>>> fn) {
+    public static class ErrorCompletion extends Completion {
+        Consumer<Throwable> econ;
+        public ErrorCompletion(Consumer<Throwable> econ) {
+            this.econ = econ;
+        }
+        @Override
+        void run(ResponseEntity<String> value) {
+            if(next != null) {
+                next.run(value);
+            }
+        }
+
+        @Override
+        void error(Throwable e) {
+            econ.accept(e);
+        }
+    }
+
+    public static class ApplyCompletion extends Completion {
+        Function<ResponseEntity<String>, ListenableFuture<ResponseEntity<String>>> fn;
+
+        public ApplyCompletion(Function<ResponseEntity<String>, ListenableFuture<ResponseEntity<String>>> fn) {
             this.fn = fn;
         }
 
+        @Override
+        void run(ResponseEntity<String> value) {
+            ListenableFuture<ResponseEntity<String>> lf = fn.apply(value);
+            lf.addCallback(s ->  this.complete(s), e ->  error(e));
+        }
+    }
 
-        // TODO
-        public Completion<T> andError(Consumer<Throwable> econ) {
-            Completion<T, T> con = new ErrorCompletion<>(econ);
-            // TODO
-            con.run(econ);
+
+    public static class Completion {
+        Completion next;
+
+        public Completion andError(Consumer<Throwable> econ) {
+            Completion c = new ErrorCompletion(econ);
+            this.next = c;
+            return c;
         }
 
 
-        // TODO
-        public <V> Completion andApply(Function<S, ListenableFuture<V> fn) {
+        public Completion andApply(Function<ResponseEntity<String>, ListenableFuture<ResponseEntity<String>>> fn) {
             Completion c = new ApplyCompletion(fn);
             this.next = c;
             return c;
         }
 
-        public static <S, T> Completion from(ListenableFuture<T> lf) {
-            //TODO
-            Completion<S, T> c = new AcceptCompletion();
+        static Completion from(ListenableFuture<ResponseEntity<String>> lf) {
+            Completion c = new Completion();
             lf.addCallback(s -> {
                 c.complete(s);
             } , e -> {
@@ -111,18 +116,18 @@ public class Tobytv010Application {
             return c;
         }
 
-        public void andAccept(Consumer<T> con) {
-            Completion<T> c = new AcceptCompletion(con);
+        public void andAccept(Consumer<ResponseEntity<String>> con) {
+            Completion c = new AcceptCompletion(con);
             this.next = c;
         }
 
-        void complete(T s) {
+        void complete(ResponseEntity<String> s) {
             if (next != null) {
                 next.run(s);
             }
         }
 
-        void run(S value) {
+        void run(ResponseEntity<String> value) {
 
         }
 
@@ -134,48 +139,6 @@ public class Tobytv010Application {
 
     }
 
-    public static class ErrorCompletion extends Completion {
-        public Consumer<Throwable> econ;
-        public ErrorCompletion(Consumer<Throwable> econ) {
-            this.econ = econ;
-        }
-        @Override
-        void run(ResponseEntity<String> value) {
-            if (next != null) {
-                next.run(value);
-            }
-        }
-
-        @Override
-        void error(Throwable e) {
-            econ.accept(e);
-        }
-    }
-
-    public static class AcceptCompletion<S> extends Completion<S, Void> {
-        public Consumer<S> con;
-        public AcceptCompletion(Consumer<S> con) {
-            this.con = con;
-        }
-        @Override
-        void run(S value) {
-            con.accept(value);
-        }
-    }
-
-    public static class ApplyCompletion<S, T> extends Completion<S, T> {
-        public Function<S, ListenableFuture<T>> fn;
-
-        public ApplyCompletion(Function<S, ListenableFuture<T>> fn) {
-            this.fn = fn;
-        }
-
-        @Override
-        void run(T value) {
-            ListenableFuture<ResponseEntity<String>> lf = fn.apply(value);
-            lf.addCallback(s ->  this.complete(s), e ->  error(e));
-        }
-    }
 
     @Service
     public static class MyService {
