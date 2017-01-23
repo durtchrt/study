@@ -76,7 +76,12 @@ public class Tobytv009Application {
     }
 
 
-
+    /**
+     *     위에 주석처리해서 동작 안함 위의 p06을 참조
+     *
+     *
+     *
+     */
     public static void main(String[] args) {
         SpringApplication.run(Tobytv009Application.class, args);
 

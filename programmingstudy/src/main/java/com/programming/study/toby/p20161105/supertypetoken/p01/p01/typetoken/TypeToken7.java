@@ -29,11 +29,15 @@ public class TypeToken7 {
 		m.put(List.class, Arrays.asList("s1", "s2", "s3"));
 		//Map에 List.class 키가 두번 들어와서 String 타입의 요소를 가진 List.class가 이전의 키를 덮어씀.
 
+		/**
+		 *
+		 * Error:(32, 37) java: <identifier> expected
+		 * 에러를 발생함. java의 문법은 Generic정보가 있는 타입토큰을 사용할수 없다.
+		 * parameterized type token을 사용할 수 없다.
+		 *
+		 */
 //		m.put(List<Integer>.class, Arrays.asList(1, 2, 3));
 //		m.put(List<String>.class, Arrays.asList("s1", "s2", "s3"));
-		//Error:(32, 37) java: <identifier> expected
-		//에러를 발생함. java의 문법은 Generic정보가 있는 타입토큰을 사용할수 없다.
-		// parameterized type token을 사용할 수 없다.
 
 
 		System.out.println(m.get(Integer.class));
