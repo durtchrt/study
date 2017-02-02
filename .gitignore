@@ -6,3 +6,6 @@ target/
 tomcat.8080/
 **/.vscode/
 
+*.pkl
+
+
