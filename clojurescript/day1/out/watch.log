@@ -1,0 +1,7 @@
+Building ...
+... done. Elapsed 0.218144991 seconds
+Watching paths: /Users/james.boo/dev/github.com/study/clojurescript/day1/src
+Change detected, recompiling ...
+Compiling src/hello_world/core.cljs
+Copying file:/Users/james.boo/dev/github.com/study/clojurescript/day1/src/hello_world/core.cljs to out/hello_world/core.cljs
+... done. Elapsed 0.144429686 seconds

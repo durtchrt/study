@@ -1,0 +1,1 @@
+{"version":3,"file":"\/Users\/james.boo\/dev\/github.com\/study\/clojurescript\/day1\/out\/hello_world\/core.js","sources":["core.cljs"],"lineCount":11,"mappings":";AAAA;;;AAMA,AAACA;AAED,4BAAA,5BAACC;AAED,uBAAA,vBAAMC,sDAAKC,EAAEC;AAAb,AACE,QAAGD,IAAEC","names":["cljs.core\/enable-console-print!","cljs.core\/println","hello-world.core\/foo","a","b"]}
