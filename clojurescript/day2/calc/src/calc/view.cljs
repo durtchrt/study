@@ -6,8 +6,12 @@
 (defn int-value [id]
   (js/parseInt (.-value (sel1 id))))
 
-(defn bmi-calc [height weight]
+(defn float-value [id]
+  (js/parseFloat (.-value (sel1 id))))
+
+(defn bmi-calc [weight height]
   (let [n (/ weight (* height height))]
+    (println height weight n)
     (cond
       (<= n 18.5) "저체중"
       (< n 25) "정상"
@@ -15,12 +19,11 @@
       :else "비만")))
 
 (defn calc []
-  (dommy/set-value! (sel1 :#result) (bmi-calc (int-value :#x) (int-value :#y))))
-
+  (dommy/set-text! (sel1 :#result) (bmi-calc (float-value :#x) (float-value :#y))))
 
 (def view
   [:div
     [:input#x {:placeholder "체중"}]
     [:input#y {:placeholder "키"}]
     [:button {:on-click calc} "결과보기"]
-    [:input#result]])
+    [:span#result]])
