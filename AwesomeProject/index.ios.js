@@ -1,31 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native';
 
-export default class AwesomeProject extends Component {
+import Tabs from 'react-native-tabs';
+
+class AwesomeProject extends Component {
+  constructor(props){
+    super(props);
+    this.state = {page:'second'};
+  }
   render() {
+    var self = this;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <Tabs selected={this.state.page} style={{backgroundColor:'white'}}
+              selectedStyle={{color:'red'}} onSelect={el=>this.setState({page:el.props.name})}>
+            <Text name="first">First</Text>
+            <Text name="second" selectedIconStyle={{borderTopWidth:2,borderTopColor:'red'}}>Second</Text>
+            <Text name="third">Third</Text>
+            <Text name="fourth" selectedStyle={{color:'green'}}>Fourth</Text>
+            <Text name="fifth">Fifth</Text>
+        </Tabs>
+          <Text style={styles.welcome}>
+              Welcome to React Native
+          </Text>
+          <Text style={styles.instructions}>
+              Selected page: {this.state.page}
+          </Text>
       </View>
     );
   }
