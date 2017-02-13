@@ -1,0 +1,91 @@
+[0mCompiling "resources/public/js/compiled/counter.js" from ["src"]...[0m
+[36m----  Compiler Warning on   src/counter/core.cljs   line:19  column:1  ----[0m
+
+  [1mcount already refers to: cljs.core/count being replaced by: counter.core/count[0m
+
+  [36m15[0m  [36m  ;; (swap! app-state update-in [:__figwheel_counter] inc)[0m
+  [36m16[0m  [36m[0m
+  [36m17[0m  [36m;; om, reagent(++)[0m
+  [36m18[0m  [36m[0m
+  [33m19[0m  [1m(def count (atom 0))[0m
+  [0m  [0m  [33m^--- count already refers to: cljs.core/count being replaced by: counter.core/count[0m
+  [36m20[0m  [36m[0m
+  [36m21[0m  [36m@counter[0m
+  [36m22[0m  [36m[0m
+  [36m23[0m  [36m(reset! counter 1)[0m
+
+[36m----  Compiler Warning : Please see src/counter/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/counter/core.cljs   line:21  column:2  ----[0m
+
+  [1mUse of undeclared Var counter.core/counter[0m
+
+  [36m17[0m  [36m;; om, reagent(++)[0m
+  [36m18[0m  [36m[0m
+  [36m19[0m  [36m(def count (atom 0))[0m
+  [36m20[0m  [36m[0m
+  [33m21[0m  [1m@counter[0m
+  [0m  [0m  [33m ^--- Use of undeclared Var counter.core/counter[0m
+  [36m22[0m  [36m[0m
+  [36m23[0m  [36m(reset! counter 1)[0m
+  [36m24[0m  [36m[0m
+  [36m25[0m  [36m(swap! counter (fn [org] (+ 1 org)))[0m
+
+[36m----  Compiler Warning : Please see src/counter/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/counter/core.cljs   line:23  column:9  ----[0m
+
+  [1mUse of undeclared Var counter.core/counter[0m
+
+  [36m19[0m  [36m(def count (atom 0))[0m
+  [36m20[0m  [36m[0m
+  [36m21[0m  [36m@counter[0m
+  [36m22[0m  [36m[0m
+  [33m23[0m  [1m(reset! counter 1)[0m
+  [0m  [0m  [33m        ^--- Use of undeclared Var counter.core/counter[0m
+  [36m24[0m  [36m[0m
+  [36m25[0m  [36m(swap! counter (fn [org] (+ 1 org)))[0m
+
+[36m----  Compiler Warning : Please see src/counter/core.cljs  ----[0m
+[36m----  Compiler Warning on   src/counter/core.cljs   line:25  column:8  ----[0m
+
+  [1mUse of undeclared Var counter.core/counter[0m
+
+  [36m21[0m  [36m@counter[0m
+  [36m22[0m  [36m[0m
+  [36m23[0m  [36m(reset! counter 1)[0m
+  [36m24[0m  [36m[0m
+  [33m25[0m  [1m(swap! counter (fn [org] (+ 1 org)))[0m
+  [0m  [0m  [33m       ^--- Use of undeclared Var counter.core/counter[0m
+
+[36m----  Compiler Warning : Please see src/counter/core.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/compiled/counter.js" in 0.357 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/out/cljs_deps.js
+notifying browser that file changed:  resources/public/js/compiled/out/counter/core.js
+[0mCompiling "resources/public/js/compiled/counter.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/counter.js" in 1.4 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/out/goog/deps.js
+notifying browser that file changed:  resources/public/js/compiled/out/cljs_deps.js
+notifying browser that file changed:  resources/public/js/compiled/out/counter/core.js
+[0mCompiling "resources/public/js/compiled/counter.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/counter.js" in 0.328 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/out/counter/core.js
+[0mCompiling "resources/public/js/compiled/counter.js" from ["src"]...[0m
+[31mFailed to compile "resources/public/js/compiled/counter.js" in 0.17 seconds.[0m
+[36m----  Could not Read  src/counter/core.cljs   line:24  column:43  ----[0m
+
+  [1mNested #()s are not allowed[0m
+
+  [36m22[0m  [36m  [:div[0m
+  [36m23[0m  [36m    [:h2 @counter][0m
+  [33m24[0m  [1m    [:button {:on-click #(swap! counter #(+ 1 %))} "+"]])[0m
+  [0m  [0m  [33m                                          ^--- Nested #()s are not allowed[0m
+  [36m25[0m  [36m[0m
+  [36m26[0m  [36m(r/render-component [view] (.getElementById js/document "app"))[0m
+
+[36m----  Reader Error : Please see src/counter/core.cljs  ----[0m
+[0mCompiling "resources/public/js/compiled/counter.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/counter.js" in 0.311 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/out/counter/core.js
+[0mCompiling "resources/public/js/compiled/counter.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/js/compiled/counter.js" in 0.294 seconds.[0m
+notifying browser that file changed:  resources/public/js/compiled/out/counter/core.js
