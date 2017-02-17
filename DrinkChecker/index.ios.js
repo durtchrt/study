@@ -15,6 +15,39 @@ import {
 
 import { createStore } from 'redux'
 import { Provider, connect } from 'react-redux'
+import firebase from 'firebase'
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyCxbkisnMO2N5NifrddaQ4Vl3aZY9IoUHk",
+  authDomain: "drinkchecker.firebaseapp.com",
+  databaseURL: "https://drinkchecker.firebaseio.com",
+  storageBucket: "drinkchecker.appspot.com",
+  messagingSenderId: "896413586697"
+};
+firebase.initializeApp(config);
+
+console.log(firebase);
+
+async function signup(email, pass) {
+
+    try {
+        await firebase.auth()
+            .createUserWithEmailAndPassword(email, pass);
+
+        console.log("Account created");
+
+        // Navigate to the Home page, the user is auto logged in
+
+    } catch (error) {
+        console.log(error.toString())
+    }
+
+}
+
+signup('boojongmin@gmail.com', '1234');
+
+
 
 // React component
 class Counter extends Component {
