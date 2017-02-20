@@ -131,6 +131,7 @@ public class Tobytv010Application {
 
         }
 
+        //TODO 코드가 이상하네?
         void error(Throwable e) {
             if (next != null) {
                 next.error(e);

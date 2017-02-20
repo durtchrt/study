@@ -124,6 +124,7 @@ public class Tobytv010Application {
 
     @Service
     public static class MyService {
+         @Async
         public ListenableFuture<String> work(String req) {
             return new AsyncResult<>(req + "/asyncwork");
         }
