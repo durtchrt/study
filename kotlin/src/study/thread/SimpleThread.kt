@@ -23,27 +23,18 @@ fun main(args: Array<String>) {
 
 fun showThreadInfo() {
         val t = Thread.currentThread()
-        val id = t.getId()
-        val name = t.getName()
-        val priority = t.getPriority()
-        val state = t.getState()
-        val threadGroup = t.getThreadGroup()
-        val groupName = threadGroup.getName()
-        val parent = t.getThreadGroup().getParent()
-        val parentName = parent.getName()
-
         val text = """
             |==============================
             |thread
-            | - id: ${id}
-            | - name: ${name}
-            | - priority: ${priority}
-            | - state: ${state}
-            | - groupName: ${groupName}
-            | - parentName: ${parentName}
+            | - id: ${t.id}
+            | - name: ${t.name}
+            | - priority: ${t.priority}
+            | - state: ${t.state}
+            | - groupName: ${t.threadGroup.name}
+            | - parentName: ${t.threadGroup.parent.name}
             |==============================
         """.trimMargin()
-        print(text)
+        println(text)
 }
 
 class ThreadSample(message: String): Thread() {

@@ -1,0 +1,14 @@
+@startuml
+|main - Thread|
+start
+:main();
+|#AntiqueWhite| sub 1 - Thread|
+:run();
+|main - Thread|
+:join();
+|sub 2 - Thread|
+:run();
+|main - Thread|
+:join();
+stop
+@enduml
