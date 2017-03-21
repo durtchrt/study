@@ -1,0 +1,24 @@
+@startuml
+
+left to right direction
+
+class Client {
+  stragegy: Strategy
+}
+
+interface Strategy {
+  +algorithm()
+}
+
+class AStrategy {
+  +algorithm()
+}
+
+class BStrategy {
+  +algorithm()
+}
+
+Strategy --|> AStrategy
+Strategy --|> BStrategy
+
+@enduml

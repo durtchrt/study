@@ -1,0 +1,41 @@
+@startuml
+  left to right direction
+
+  class Invoker {
+    command:Command
+    setCommand(Command)
+    execute()
+  }
+
+  abstract class Command {
+    reciever: Reciever
+    execute()
+  }
+
+  class Reciever {
+    action()
+  }
+
+  class ACommand {
+    execute()
+  }
+
+  class BCommand {
+    execute()
+  }
+
+  class Client {
+    reciever: Reciever
+    aCommand: ACommand
+    bCommand: BCommand
+    invoker: Invoker
+  }
+
+  Command --|> ACommand
+  Command --|> BCommand
+
+  Invoker *-- Command
+  Reciever <-- ACommand
+  Reciever <-- BCommand
+
+@enduml

@@ -1,8 +1,12 @@
 
+```shell
+mvn compile exec:java
+```
 
 
 ```shell
-▶ javap -l -c ByteCodeExample
+// javap -l -c ByteCodeExample
+▶ javap -all ByteCodeExample
 
 Compiled from "ByteCodeExample.java"
 class ByteCodeExample {
