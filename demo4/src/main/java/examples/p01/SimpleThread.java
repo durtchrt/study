@@ -1,6 +1,9 @@
 package examples.p01;
 
+import lombok.*;
+
 public class SimpleThread {
+    @SneakyThrows
     public static void main(String[] args) throws InterruptedException {
         String message = "Hello KSUG";
         ThreadSample t1 = new ThreadSample(message);
@@ -12,12 +15,9 @@ public class SimpleThread {
 
         Thread t2 = new Thread(new Runnable() {
             @Override
+            @SneakyThrows
             public void run() {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(100);
                 System.out.println("==============================");
                 System.out.println("message from Runnable: " + message);
                 System.out.println("==============================");
@@ -39,11 +39,7 @@ public class SimpleThread {
                 System.out.println("threadGroup.name : " + groupName);
                 System.out.println("parentName : " + parentName);
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(1000);
             }
         });
 //        t2.setDaemon(true);
@@ -65,12 +61,9 @@ class ThreadSample extends Thread {
     }
 
     @Override
+    @SneakyThrows
     public void run() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(500);
         System.out.println("==============================");
         System.out.println("message from ThreadSample: " + message);
         System.out.println("==============================");
@@ -93,13 +86,6 @@ class ThreadSample extends Thread {
         System.out.println("threadGroup.name : " + groupName);
         System.out.println("parentName : " + parentName);
 
-
-        try {
-
-            Thread.sleep(1000);
-            System.out.println("exit ThreadSample thread");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(1000);
     }
 }

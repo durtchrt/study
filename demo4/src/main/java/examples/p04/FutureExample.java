@@ -3,46 +3,34 @@ package examples.p04;
 import java.util.*;
 import java.util.concurrent.*;
 
+import lombok.*;
+import lombok.extern.slf4j.*;
+
+@Slf4j
 public class FutureExample {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         SimpleThreadPool pool = new SimpleThreadPool(3);
-
-//        ExecutorService es = Executors.newFixedThreadPool(3);
-        List<SimpleFuture> list = new ArrayList();
+        Callable<String> callback = () -> {
+            Thread.sleep(100);
+            log.debug("Callable");
+            return "Hello KSUG";
+        };
+        List<SimpleFuture> list = new ArrayList<>();
         for(int i =0; i< 100; i++) {
-            SimpleFuture<String> simpleFuture = pool.submit(() -> {
-                Thread.sleep(1000);
-                System.out.println("Hello");
-                return "Hello";
-            });
+
+            SimpleFuture<String> simpleFuture = pool.submit(callback);
             list.add(simpleFuture);
-//            Future<String> f = pool.submit(() -> {
-//                Thread.sleep(1000);
-//                System.out.println("Hello");
-//                return "Hello";
-//            });
-//            System.out.println(f.get());
         }
 
-        for (SimpleFuture future : list) {
-            System.out.println(future.get());
+        for (SimpleFuture<String> future : list) {
+            log.error(future.get());
         }
-        
-
-//        list.stream().map(x -> {
-//            try {
-//                return x.get();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            return "";
-//        }).forEach(System.out::println);
-//        pool.submit()
     }
 }
 
-class SimpleFuture<T>  {
+@Slf4j
+class SimpleFuture<T> implements Runnable  {
     private Object futureNotifier = new Object();
     private T result;
     private Callable c;
@@ -51,18 +39,23 @@ class SimpleFuture<T>  {
         this.c = c;
     }
 
-    public T get() throws InterruptedException {
+    @SneakyThrows
+    public T get() {
         if(result == null) {
             synchronized (futureNotifier) {
+                log.error("get wait");
                 futureNotifier.wait();
             }
         }
         return result;
     }
 
-    public void run() throws Exception {
+    @Override
+    @SneakyThrows
+    public void run() {
         result = (T)c.call();
         synchronized (futureNotifier) {
+            log.warn("futureNotifier notify");
             futureNotifier.notify();
         }
     }
@@ -73,8 +66,8 @@ class SimpleThreadPool {
     private int threadLimit;
 
     Object notifier = new Object();
-//    Queue<Runnable> workQueue = new ConcurrentLinkedQueue<>();
-    Queue<SimpleFuture> workQueue = new LinkedList<>();
+    Queue<SimpleFuture> workQueue = new ConcurrentLinkedQueue<>();
+//    Queue<SimpleFuture> workQueue = new LinkedList<>();
 
     public SimpleThreadPool(int threadLimit) {
         this.threadLimit = threadLimit;
@@ -86,6 +79,9 @@ class SimpleThreadPool {
     public <T> SimpleFuture<T> submit(Callable<T> c) {
         SimpleFuture<T> f = new SimpleFuture<>(c);
         workQueue.add(f);
+        synchronized( notifier ) {
+            notifier.notify();
+        }
         return f;
     }
 
@@ -101,22 +97,15 @@ class WorkThread extends Thread {
     }
 
     @Override
+    @SneakyThrows
     public void run() {
         while(true) {
             if(!workQueue.isEmpty()) {
                 SimpleFuture f = workQueue.poll();
-                try {
-                    f.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                f.run();
             } else {
-                try {
-                    synchronized (notifier){
-                        notifier.wait();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                synchronized (notifier){
+                    notifier.wait();
                 }
             }
         }
