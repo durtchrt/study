@@ -7,7 +7,7 @@ import lombok.*;
 import lombok.extern.slf4j.*;
 
 @Slf4j
-public class FutureExample {
+public class FutureImplementExample {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         SimpleThreadPool pool = new SimpleThreadPool(3);
@@ -24,7 +24,7 @@ public class FutureExample {
         }
 
         for (SimpleFuture<String> future : list) {
-            log.error(future.get());
+            log.info(future.get());
         }
     }
 }
@@ -59,7 +59,6 @@ class SimpleFuture<T> implements Runnable  {
             futureNotifier.notify();
         }
     }
-
 }
 
 class SimpleThreadPool {

@@ -16,15 +16,18 @@ public class ThreadPoolUpgradeExample {
             @SneakyThrows
             public void run() {
                 log.debug("Hello KSUG");
-                Thread.sleep(100);
+//                Thread.sleep(100);
             }
         };
 
         int i = 0;
         while(true) {
             pool.submit(r);
+            pool.submit(r);
+            pool.submit(r);
             if(i != 0 && i % THREAD_LIMIT == 0) Thread.sleep(100);
-            
+                Thread.sleep(10000);
+
             i++;
         }
     }
@@ -55,7 +58,6 @@ class SimpleThreadPool {
             notifier.notify();
         }
     }
-
 }
 
 @Slf4j

@@ -1,8 +1,6 @@
 package examples.p02;
 
 import java.util.*;
-import java.util.concurrent.*;
-
 import lombok.*;
 import lombok.extern.slf4j.*;
 
@@ -17,19 +15,19 @@ public class ThreadPoolExample {
             @Override
             public void run() {
                 log.debug("Hello KSUG");
-                Thread.sleep(100);
+//                Thread.sleep(100);
             }
         };
         int i =0;
         while(true) {
             pool.submit(r);
             if(i != 0 && i % THREAD_LIMIT == 0) Thread.sleep(100);
+            Thread.sleep(1000);
 
             i++;
 
         }
     }
-
 }
 
 @Slf4j
@@ -44,12 +42,10 @@ class SimpleThreadPool {
             new WorkThread(this.workQueue).start();
         }
     }
-
     public void submit(Runnable r) {
         log.info("submit");
         this.workQueue.add(r);
     }
-
 }
 
 @Slf4j
@@ -63,13 +59,10 @@ class WorkThread extends Thread {
     @Override
     public void run() {
         while(true) {
-//            synchronized (workQueue) {
                 if(!workQueue.isEmpty()) {
                     Runnable r = workQueue.poll();
-                    // NPE 발생해서 위에서 synchronized 추가
                     if(r != null) r.run();
                 }
-//            }
 
         }
     }

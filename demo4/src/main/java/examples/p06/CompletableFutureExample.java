@@ -10,27 +10,29 @@ public class CompletableFutureExample {
 
     @SneakyThrows
     public static void main(String[] args) {
-        CompletableFuture<String> cf = CompletableFuture
+        CompletableFuture<String> cf1 = CompletableFuture
+                                            .supplyAsync(() -> "!!!");
+
+        CompletableFuture<String> cf2 = CompletableFuture
                 .completedFuture("Hello")
                 .thenApply(x -> {
                     log.info(x);
                     return x + " K";
                 })
                 .thenApplyAsync(x -> {
-//                .thenApply(x -> {
-                    log.error(x);
+                    log.debug(x);
                     return x + "S";
                 })
                 .thenApply(x -> {
                     log.info(x);
                     return x + "U";
                 })
-                .thenApply(x -> {
+                .thenApplyAsync(x -> {
                     log.info(x);
                     return x + "G";
-                });
+                })
+                .thenCombineAsync(cf1, (x, y) -> x  + y);
 
-        log.warn(cf.get());
+        log.warn(cf2.get());
     }
-
 }
