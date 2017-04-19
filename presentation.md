@@ -42,14 +42,20 @@
 - 결론
   - thread의 갯수가 많이 줄어 들었지만 callback 형태의 개발이 쉽지 않다.
   - 이 시점부터는 event driven programming이 되어 버렸다.
+  - CompletableFuture로는 부족 - 좀더 추상화된 API가 필요.
+   - API: reactive-streams -> 구현체: projectreactor
 
-#### 결론
+#### 발표를 마치며..
   - thread를 직접 사용하는 것은 쉽지 않다. circuit breaker까지 도입.
   - Nonblocking IO를 사용하면 thread 갯수를 줄일수 있어서 도움이 된다.
-  - thread 갯수가 줄어드는 것은 context switching 비용이 줄어들고 GC 비용이 줄어든다.
-  - Nonblocking Servlet으로 개발하려면 보통 Spring DeferredResult를 사용하는데 개발하는건 아직 뭔가 가렵다
-  - CompletableFuture는 훌륭한 이벤트 기반 프로그래밍을 제공하지만 single value 관점이다.
-  - stream 기반의 좀더 추상화된 모습이 Reactive로 나오고 있다.
+    - thread 갯수가 줄어드는 것은 context switching 비용이 줄어들고 GC 비용이 줄어든다.
+    - Nonblocking Servlet으로 개발하려면 보통 Spring DeferredResult를 사용하는데 개발하는건 아직 뭔가 가렵다
+  - Nonblocking 방식으로 개발하다보면 event driven programming이 된다.  
+  - CompletableFuture는 훌륭하지만 single value 관점이다.
+  - multiple value(event stream)를 처리할수 있는 좀더 추상화된 API가 필요 =>
+    - API: reactive-streams, Spring: projectreactor
+  - functional 패러다임이 적극 녹아들어 다양한 고계함수(operators)를 제공. - 개발의 자유로움 극대화
   - backpressure는 기존 thread를 직접사용하는 형태의 프로그래밍 방법보다 더 나은 resilience를 제공.
-  - Spring 5의 리액티브 코드들을 중심으로 기존과 확 달라지는 부분들을 보면 스프링도 이 방향이 맞다고 판단. 패러다임 자체를 바꿨다고 생각함.
-  - 토비님의 섹션!!!
+  - Spring 5의 리액티브 코드들을 중심으로 기존과 확 달라지는 부분들을 보면 스프링도 이 방향이 맞다고 판단. Spring도 패러다임 자체를 바꿨다고 생각함.
+    - 기존 api가 deprecated된 이유
+  - 토비님의 섹션에서 자세하게 들어보자!!!
