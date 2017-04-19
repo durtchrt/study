@@ -34,12 +34,12 @@
 #### 성능향상
 - 도입
   - event 기반으로 프로그래밍 관점을 바꾸자.
-  - thread per IO 모델을 벗어나자.
+  - thread per event 모델을 벗어나자.
 - CompletableFuture  
   - 기존 Future로 된 코드의 문제점
   - 적용 사례
   - CompletableFuture는 event driven programming을 제공.
-- nonblocking IO
+- nonblocking
     - server
       - DeferredResult + CompletableFuture code example
     - client
