@@ -10,7 +10,7 @@
     - process = thread + memory layout
     - thread state
     - context switch
-  - thread
+  - 비동기
     - concurrency
     - parallel
 - 마무리
@@ -31,7 +31,7 @@
       - 과도한 트래픽
       - API 서버 장애
 
-#### 성능향상
+#### 향상
 - 도입
   - event 기반으로 프로그래밍 관점을 바꾸자.
   - thread per event 모델을 벗어나자.
