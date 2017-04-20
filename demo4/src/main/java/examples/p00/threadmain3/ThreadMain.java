@@ -1,26 +1,39 @@
-package examples.p00;
-
-import org.springframework.web.client.*;
+package examples.p00.threadmain3;
 
 import java.util.*;
 
 public class ThreadMain {
 
     public static void main(String[] args) throws InterruptedException {
+        Map map = new HashMap();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("run");
                 Result result = getAPI();
+                map.put("API", result);
+                /*synchronized (map) {
+                    map.notify();
+                }*/
             }
         });
         thread.start();
-        System.out.println("main");
-
+        if(map.get("API") == null) {
+            synchronized (map) {
+                map.wait();
+            }
+        }
+        System.out.println(map.get("API"));
     }
 
+
+
     static Result getAPI() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new Result();
     }
 

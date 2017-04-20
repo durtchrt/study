@@ -1,24 +1,26 @@
-package examples.p00;
-
-import org.springframework.web.client.*;
+package examples.p00.ThreadMain2;
 
 import java.util.*;
 
 public class ThreadMain {
 
     public static void main(String[] args) throws InterruptedException {
+        Map map = new HashMap();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("run");
                 Result result = getAPI();
+                map.put("API", result);
             }
         });
         thread.start();
         System.out.println("main");
 
     }
+
+
 
     static Result getAPI() {
         return new Result();
