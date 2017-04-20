@@ -10,13 +10,12 @@ public class ThreadMain {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("run");
                 Result result = getAPI();
                 map.put("API", result);
             }
         });
         thread.start();
-        System.out.println("main");
+        System.out.println(map.get("API"));
 
     }
 
