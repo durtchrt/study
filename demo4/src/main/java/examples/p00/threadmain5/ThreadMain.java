@@ -20,12 +20,14 @@ public class ThreadMain {
 //        System.out.println(result);
 //        es.shutdown();
 
-        Result result = CompletableFuture
-                .completedFuture("Hello KSUG!!!")
-                .thenApply(msg -> getFirstAPI(msg))
-                .thenApply(param -> getSecondAPI(param))
-                .get();
-        System.out.println(result);
+
+
+//        Result result = CompletableFuture
+//                .completedFuture("Hello KSUG!!!")
+//                .thenApply(ThreadMain::getFirstAPI)
+//                .thenApplyAsync(ThreadMain::getSecondAPI)
+//                .get();
+//        System.out.println(result);
 
         CompletableFuture<String> cf1 = CompletableFuture.completedFuture("Hello");
         CompletableFuture<String> cf2 = CompletableFuture.completedFuture("KSGU");
@@ -36,13 +38,10 @@ public class ThreadMain {
         System.out.println(msg);
 
         CompletableFuture<String> cf = new CompletableFuture<>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                cf.complete("Hello KSUG!!!");
-            }
-        }).start();
-        System.out.println(cf.get());
+        new Thread(() -> cf.complete("Hello KSUG!!!"))
+            .start();
+        String result = cf.get();
+        System.out.println(result);
 
 
     }

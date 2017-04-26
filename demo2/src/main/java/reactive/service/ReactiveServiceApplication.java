@@ -25,8 +25,6 @@ public class ReactiveServiceApplication {
     Flux<Event> events() {
         Flux<Event> eventFlux =
             Flux.fromStream(Stream.generate(() -> new Event(System.currentTimeMillis(), new Date())));
-//        Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(1));
-//        return Flux.zip(eventFlux, durationFlux).map(Tuple2::getT1);
         return eventFlux.delayElements(Duration.ofSeconds(1));
     }
 
