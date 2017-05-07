@@ -1,0 +1,18 @@
+[
+  // Keybindings that are active when the focus is in the editor
+  { "key": "home",            "command": "cursorHome",                  "when": "editorTextFocus" },
+  { "key": "shift+home",      "command": "cursorHomeSelect",            "when": "editorTextFocus" },
+
+  // Keybindings that are complementary
+  { "key": "f5",              "command": "workbench.action.debug.continue", "when": "inDebugMode" },
+  { "key": "f5",              "command": "workbench.action.debug.start",    "when": "!inDebugMode" },
+
+  // Global keybindings
+  { "key": "ctrl+f",          "command": "actions.find" },
+  { "key": "alt+left",        "command": "workbench.action.navigateBack" },
+  { "key": "alt+right",       "command": "workbench.action.navigateForward" },
+
+  // Global keybindings using chords (two separate keypress actions)
+  { "key": "ctrl+k enter",    "command": "workbench.action.keepEditor" },
+  { "key": "ctrl+k ctrl+w",   "command": "workbench.action.closeAllEditors" }
+]
