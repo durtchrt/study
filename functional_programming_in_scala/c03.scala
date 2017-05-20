@@ -22,8 +22,13 @@ object List {
   def apply[A](as: A*): List[A] = 
     if(as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
-
 }
+
+val leftList = List(1, 2, 3)
+val rightList = List(4, 5, 6)
+// val joinedList = join(leftList, rightList)
+println(leftList)
+
 
 val ex1: List[Double] = Nil
 val ex2: List[Int] = Cons(1, Nil)
@@ -113,3 +118,64 @@ val setHeadResult2 = setHead[Int](List(1), 0)
 println(s"setHeadResult2: ${setHeadResult2}")
 val setHeadResult3 = setHead[Int](List(1,2,3,4), 0)
 println(s"setHeadResult3: ${setHeadResult3}")
+
+
+//3.5 TREE
+sealed trait Tree[+A]
+case class Leaf[A](value: A) extends Tree[A]
+case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+
+val leafA = Leaf("a")
+val leafB = Leaf("b")
+val branchA = Branch(leafA, leafB)
+
+val leafC = Leaf("c")
+val leafD = Leaf("d")
+val branchB = Branch(leafC, leafD)
+
+val root = Branch(branchA, branchB)
+
+println(root)
+
+def size(t: Tree[String]) =  {
+  def travelTree(t: Tree[String]): List[Tuple2[Int, Int]] = 
+    t match {
+      case Branch(x, y) => Cons((1, 0), travelTree(x)) // travelTree(y)를 넣을데가.... List merge가 필요함. T-T
+      case Leaf(x) => Cons((0, 1), Nil)
+    }
+  
+   travelTree(t)
+}
+
+val treeSize = size(root)
+println(treeSize)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,10 +10,6 @@
     "suppressTaskName": true,
     "tasks": [
       {
-        "taskName": "echo",
-        "command": "echo",
-        "args": ["Hello World"]
-      },{
         "taskName": "run scala script",
         "command": "scala",
         "args": ["${file}"]
