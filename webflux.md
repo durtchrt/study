@@ -1,6 +1,7 @@
 ### webflux 코드 샘플
+(pom.xml은 하단 참조)
 
-```
+```java
 public class Server {
     public static void main(String[] args) throws IOException {
         new Server().run();
@@ -25,8 +26,9 @@ public class Server {
 - ServerResponse - ServerResponse.BodyBuilder로 생성.
 - RequestPredicate: ServerRequest -> boolean(RequestPredicates으로 생성.)
 - HandlerFunction: ServerRequest -> Mono<T>
+- BodyInserters.fromObject(): BodyInserter<T, ReactiveHttpOutputMessage>
 - RouterFunction: ServerRequest -> Mono<HandlerFunction<T>>
-- RouterFunctins.route(RequestPredict, HandlerFuction):RouterFunction<T extends ServerResponse> -> RouterFunctions.toHttpHandler:HttpWebHandlerAdapter -> 
+- RouterFunctins.route(RequestPredict, HandlerFuction): RouterFunction<T extends ServerResponse> -> RouterFunctions.toHttpHandler:HttpWebHandlerAdapter -> 
 
 
 ### POST multipart/form-data 참조
@@ -40,7 +42,7 @@ Part interface는 뒤의 2 interface가 상속:  FilePart,  FormFieldPart
 
 ### ServletHttpHandlerAdapter
     // Servlet is based on blocking I/O, hence the usage of non-direct, heap-based buffers
-// (i.e. 'false' as constructor argument)
+    // (i.e. 'false' as constructor argument)
 
 위의 주석을 보면 ServletHttpHandler를 쓰는 것들은 nio의 장점을 제대로 못쓰는 것으로 보임
   1. blocking I/O
@@ -82,5 +84,95 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 
 
 
+### pom.xml
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>study</groupId>
+	<artifactId>webflux-sample</artifactId>
+	<version>0.1-SNAPSHOT</version>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+        <dependencies>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-bom</artifactId>
+			<version>Bismuth-RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+		</dependency>
+        </dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+			<version>5.0.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.0.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.reactivestreams</groupId>
+			<artifactId>reactive-streams</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor.ipc</groupId>
+			<artifactId>reactor-netty</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.0.pr2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jcl</artifactId>
+			<version>2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>5.0.0.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+
+```
 
