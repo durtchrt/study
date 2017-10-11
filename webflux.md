@@ -20,29 +20,27 @@ public class Server {
 }
 ```
 
-### Type cheatsheet
-
-ServerRequest - Server단에서 생성해서 주입할 것이므로 있다고 생각하고 개발
-ServerResponse - ServerResponse.BodyBuilder로 생성.
-
-RequestPredicate: ServerRequest -> boolean(RequestPredicates 사용)
-HandlerFunction: ServerRequest -> Mono<T>
-RouterFunction: ServerRequest -> Mono<HandlerFunction<T>>
-
-RouterFunctins.route(RequestPredict, HandlerFuction):RouterFunction<T extends ServerResponse> -> RouterFunctions.toHttpHandler:HttpWebHandlerAdapter -> 
+### 자주 나오는 Type cheatsheet
+- ServerRequest - Server가 생성해서 주입. 익명함수의 인자로 사용.
+- ServerResponse - ServerResponse.BodyBuilder로 생성.
+- RequestPredicate: ServerRequest -> boolean(RequestPredicates으로 생성.)
+- HandlerFunction: ServerRequest -> Mono<T>
+- RouterFunction: ServerRequest -> Mono<HandlerFunction<T>>
+- RouterFunctins.route(RequestPredict, HandlerFuction):RouterFunction<T extends ServerResponse> -> RouterFunctions.toHttpHandler:HttpWebHandlerAdapter -> 
 
 
 ### POST multipart/form-data 참조
 참조할만한 테스트 코드:  org.springframework.web.reactive.function.BodyExtractorsTests
-[예제 작성된 github](https://github.com/sdeleuze/webflux-multipart/blob/master/src/main/java/com/example/MultipartRoute.java)
+
+[예제 작성된 github](https://github.com/sdeleuze/webflux-multipart/blob/master/src/main/java/com/example/MultipartRoute.java) -> 예제 코드에서 Part는 tranferTo가 없는데 사용함. 기존 interface가 바뀐듯함. 지금 돌리면 에러 발생할 듯.
 
 Part interface는 뒤의 2 interface가 상속:  FilePart,  FormFieldPart
 
 * TODO: Post Body lenght limit 방법 확인할것 *
 
 ### ServletHttpHandlerAdapter
-    	// Servlet is based on blocking I/O, hence the usage of non-direct, heap-based buffers
-	// (i.e. 'false' as constructor argument)
+    // Servlet is based on blocking I/O, hence the usage of non-direct, heap-based buffers
+// (i.e. 'false' as constructor argument)
 
 위의 주석을 보면 ServletHttpHandler를 쓰는 것들은 nio의 장점을 제대로 못쓰는 것으로 보임
   1. blocking I/O
