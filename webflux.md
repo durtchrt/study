@@ -21,6 +21,10 @@ public class Server {
 }
 ```
 
+[nio 참조 링크](https://www.slideshare.net/llj098/epoll-from-the-kernel-side)
+
+
+
 ### 자주 나오는 Type cheatsheet
 - ServerRequest - Server가 생성해서 주입. 익명함수의 인자로 사용.
 - ServerResponse - ServerResponse.BodyBuilder로 생성.
