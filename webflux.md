@@ -183,7 +183,7 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 1. 왜 webflux인가!
 1. source 코드를 읽기
    - why?
-   - 느낀점(부족한 메뉴얼)
+   - 느낀점(부족한 메뉴얼 [document](https://docs.spring.io/spring/docs/5.0.1.BUILD-SNAPSHOT/spring-framework-reference/web-reactive.html), github 방황...)
    - 필요한 배경지식 소개
 1. server start
 1. example - minimum router & handler & httpHandler
@@ -194,7 +194,8 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
    - ReactorHttpHandlerAdapter는 HttpHandler만 원하는데 HttpWebHandlerAdapter를 넣는 이유(설명)
 1. Filter, Exception....(그리고 또 뭘할까...?)
 1. Integrate with spring by DispatcherHandler
-1. one more thing! language support to kotlin	
+1. one more thing! language support to kotlin
+   - [document](https://docs.spring.io/spring/docs/5.0.1.BUILD-SNAPSHOT/spring-framework-reference/languages.html)
 
 ## (spring-test 프로젝트) HttpServerTests 
 - @Before - server start하는 로직이 있음
