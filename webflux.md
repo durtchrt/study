@@ -179,21 +179,55 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 </project>
 
 ```
-
-## HttpHandler
-- 	Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response);
-
-#### HttpWebHandlerAdapter: WebHandlerDecorator, HttpHandler 
-- handler, decorator 패턴
-- 
-
-## WebHandler
--	Mono<Void> handle(ServerWebExchange exchange);
+## 아래의 순서대로 설명 예정
+1. 왜 webflux인가!
+1. source 코드를 읽기
+  - why?
+  - 느낀점(부족한 메뉴얼)
+  - 필요한 배경지식 소개
+1. server start
+1. example - minimum router & handler & httpHandler
+1. RequestPredict - 다양한 예제 작성
+1. HandlerFunction<ServerResponse>
+1. RouterFunction 설명 및 테스트 코드작성
+1. HttpHandler, WebHandler 그리고 HttpWebHandlerAdapter
+  - ReactorHttpHandlerAdapter는 HttpHandler만 원하는데 HttpWebHandlerAdapter를 넣는 이유(설명)
+1. Filter, Exception....(그리고 또 뭘할까...?)
+1. Integrate with spring by DispatcherHandler
 	
 
 ## (spring-test 프로젝트) HttpServerTests 
 - @Before - server start하는 로직이 있음
 - DefaultServerResponseBuilder(ServerResponse.ok()가 리턴하는 구체클래스) 
+
+
+
+## HttpHandler
+- 	Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response);
+
+#### HttpWebHandlerAdapter: WebHandlerDecorator, HttpHandler 
+- handler, decorator 패턴 굿!
+- handle 메서드 중요!! 
+*httpHandler를 webHandler로바꾸는건이해는가지만 필터같은건 언제 적용하는거지?*
+--> FilteringWebHandler.handle -> DefaultWebFilterChain
+---> WebFilter
+   - CorsWebFilter -> CorsWebFilterTests 이 테스트를참조해보면 filter 사용법을 알 수있다.
+
+```
+	@Override
+	public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
+		ServerWebExchange exchange = createExchange(request, response);
+		return getDelegate().handle(exchange)
+				.onErrorResume(ex -> {
+					response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+					logHandleFailure(ex);
+					return Mono.empty();
+				})
+				.then(Mono.defer(response::setComplete));
+```
+## WebHandler
+-	Mono<Void> handle(ServerWebExchange exchange);
+	
 
 ## Webhandler
 
@@ -214,9 +248,28 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 				.localeContextResolver(strategies.localeContextResolver())
 				.build();
 	}
+	
+	public static WebHandler toWebHandler(RouterFunction<?> routerFunction, HandlerStrategies strategies) {
+		Assert.notNull(routerFunction, "RouterFunction must not be null");
+		Assert.notNull(strategies, "HandlerStrategies must not be null");
+
+		return exchange -> {
+			ServerRequest request = new DefaultServerRequest(exchange, strategies.messageReaders());
+			addAttributes(exchange, request);
+			return routerFunction.route(request)
+					.defaultIfEmpty(notFound())					
+// 우리가 입력한 핸들러가 실행되는 라인
+					.flatMap(handlerFunction -> wrapException(() -> handlerFunction.handle(request)))
+					.flatMap(response -> wrapException(() -> response.writeTo(exchange,
+							new HandlerStrategiesResponseContext(strategies))));
+		};
+	}
   ```
+- HandlerStrategies의 구현 클래스 DefaultHandlerStrategiesBuilder
+  
 ##  WebHttpHandlerBuilder
  - 리턴하는건 HttpHandler지만 실제로는 HttpWebHandlerAdapter 리턴.(http, web 구분해서사용함 주의)
+ - webhandler에서사용하는것들: FilteringWebHandler, ExceptionHandlingWebHandler, sessionManager, codecConfigurer, localeContextResolver
   ```
   public HttpHandler build() {
 
@@ -240,7 +293,6 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 	}
   ```
   
-
 
 #### DispatcherHandler: WebHandler, ApplicationContextAware
 - org.springframework.web.reactive.HandlerMapping (org.springframework.web.servlet 아님)
