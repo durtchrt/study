@@ -180,3 +180,34 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 
 ```
 
+## HttpHandler
+- 	Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response);
+## WebHandler
+-	Mono<Void> handle(ServerWebExchange exchange);
+	
+
+## HttpServerTests 
+- @Before - server start하는 로직이 있음
+- DefaultServerResponseBuilder(ServerResponse.ok()가 리턴하는 구체클래스) 
+
+## Webhandler
+- WebHttpHandlerBuilder.applicationContext(applicationContext)
+
+## RouterFunctions
+- toHttpHandler(routerFunction): HttpHandler
+
+
+#### DispatcherHandler: WebHandler, ApplicationContextAware
+- org.springframework.web.reactive.HandlerMapping (org.springframework.web.servlet 아님)
+ - 	Mono<Object> getHandler(ServerWebExchange exchange);
+- org.springframework.web.reactive.HandlerAdapter
+ -	boolean supports(Object handler);
+ - 	Mono<HandlerResult> handle(ServerWebExchange exchange, Object handler);
+- org.springframework.web.reactive.HandlerResultHandler
+ - 	boolean supports(HandlerResult result);
+ -	Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result);
+
+
+
+
+
