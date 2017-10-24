@@ -182,19 +182,64 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 
 ## HttpHandler
 - 	Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response);
+
+#### HttpWebHandlerAdapter: WebHandlerDecorator, HttpHandler 
+- handler, decorator 패턴
+- 
+
 ## WebHandler
 -	Mono<Void> handle(ServerWebExchange exchange);
 	
 
-## HttpServerTests 
+## (spring-test 프로젝트) HttpServerTests 
 - @Before - server start하는 로직이 있음
 - DefaultServerResponseBuilder(ServerResponse.ok()가 리턴하는 구체클래스) 
 
 ## Webhandler
-- WebHttpHandlerBuilder.applicationContext(applicationContext)
+
+## WebHttpHandlerBuilder.applicationContext(applicationContext) <-빈네임으로조회하는로직이있음
 
 ## RouterFunctions
-- toHttpHandler(routerFunction): HttpHandler
+- (중요)toHttpHandler함수는 WebHandler -> HttpHandler 둘 다나옴.
+- (HttpHandler)toHttpHandler(routerFunction): HttpHandler <- builder pattern (메서드마다 끝에 this 리턴하는 부분 확인)
+  ```java
+  	public static HttpHandler toHttpHandler(RouterFunction<?> routerFunction, HandlerStrategies strategies) {
+		Assert.notNull(routerFunction, "RouterFunction must not be null");
+		Assert.notNull(strategies, "HandlerStrategies must not be null");
+
+		WebHandler webHandler = toWebHandler(routerFunction, strategies);
+		return WebHttpHandlerBuilder.webHandler(webHandler)
+				.filters(filters -> filters.addAll(strategies.webFilters()))
+				.exceptionHandlers(handlers -> handlers.addAll(strategies.exceptionHandlers()))
+				.localeContextResolver(strategies.localeContextResolver())
+				.build();
+	}
+  ```
+##  WebHttpHandlerBuilder
+ - 리턴하는건 HttpHandler지만 실제로는 HttpWebHandlerAdapter 리턴.(http, web 구분해서사용함 주의)
+  ```
+  public HttpHandler build() {
+
+		WebHandler decorated;
+
+		decorated = new FilteringWebHandler(this.webHandler, this.filters);
+		decorated = new ExceptionHandlingWebHandler(decorated,  this.exceptionHandlers);
+
+		HttpWebHandlerAdapter adapted = new HttpWebHandlerAdapter(decorated);
+		if (this.sessionManager != null) {
+			adapted.setSessionManager(this.sessionManager);
+		}
+		if (this.codecConfigurer != null) {
+			adapted.setCodecConfigurer(this.codecConfigurer);
+		}
+		if (this.localeContextResolver != null) {
+			adapted.setLocaleContextResolver(this.localeContextResolver);
+		}
+
+		return adapted;
+	}
+  ```
+  
 
 
 #### DispatcherHandler: WebHandler, ApplicationContextAware
