@@ -182,19 +182,19 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 ## 아래의 순서대로 설명 예정
 1. 왜 webflux인가!
 1. source 코드를 읽기
-  - why?
-  - 느낀점(부족한 메뉴얼)
-  - 필요한 배경지식 소개
+   - why?
+   - 느낀점(부족한 메뉴얼)
+   - 필요한 배경지식 소개
 1. server start
 1. example - minimum router & handler & httpHandler
 1. RequestPredict - 다양한 예제 작성
 1. HandlerFunction<ServerResponse>
 1. RouterFunction 설명 및 테스트 코드작성
 1. HttpHandler, WebHandler 그리고 HttpWebHandlerAdapter
-  - ReactorHttpHandlerAdapter는 HttpHandler만 원하는데 HttpWebHandlerAdapter를 넣는 이유(설명)
+   - ReactorHttpHandlerAdapter는 HttpHandler만 원하는데 HttpWebHandlerAdapter를 넣는 이유(설명)
 1. Filter, Exception....(그리고 또 뭘할까...?)
 1. Integrate with spring by DispatcherHandler
-	
+1. one more thing! language support to kotlin	
 
 ## (spring-test 프로젝트) HttpServerTests 
 - @Before - server start하는 로직이 있음
