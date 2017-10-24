@@ -183,7 +183,7 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 1. 왜 webflux인가!
 1. source 코드를 읽기
    - why?
-   - 느낀점(부족한 메뉴얼 [document](https://docs.spring.io/spring/docs/5.0.1.BUILD-SNAPSHOT/spring-framework-reference/web-reactive.html), github 방황...)
+   - 느낀점(부족한 메뉴얼 [document](https://docs.spring.io/spring/docs/5.0.1.BUILD-SNAPSHOT/spring-framework-reference/web-reactive.html), github 방황...), 프레임워크를 공부할때 테스트 코드를 따라다니는 것 그리고 작성하는것은 의미가 있음)
    - 필요한 배경지식 소개
 1. server start
 1. example - minimum router & handler & httpHandler
@@ -298,12 +298,15 @@ public static RequestPredicate queryParam(String name, Predicate<String> predica
 #### DispatcherHandler: WebHandler, ApplicationContextAware
 - org.springframework.web.reactive.HandlerMapping (org.springframework.web.servlet 아님)
  - 	Mono<Object> getHandler(ServerWebExchange exchange);
+	- resource
 - org.springframework.web.reactive.HandlerAdapter
  -	boolean supports(Object handler);
  - 	Mono<HandlerResult> handle(ServerWebExchange exchange, Object handler);
+    - HandlerFunctionAdapter, SimpleHandlerAdapter, RequestMappingHandlerAdapter, WebSocketHandlerAdapter	 
 - org.springframework.web.reactive.HandlerResultHandler
  - 	boolean supports(HandlerResult result);
  -	Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result);
+
 
 
 
