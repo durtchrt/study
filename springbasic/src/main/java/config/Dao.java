@@ -23,12 +23,17 @@ public class Dao {
     }
 
     public void insert() {
-        jdbcTemplate.update("insert into test values(1)");
-        jdbcTemplate.update("insert into test values(2)");
-        jdbcTemplate.update("insert into test values(3)");
-        jdbcTemplate.update("insert into test values(4)");
-        jdbcTemplate.update("insert into test values(5)");
-        jdbcTemplate.update("insert into test values(6)");
+        try {
+            jdbcTemplate.update("insert into test values(1)");
+            jdbcTemplate.update("insert into test values(2)");
+            jdbcTemplate.update("insert into test values(3)");
+            jdbcTemplate.update("insert into test values(4)");
+            if(true) throw new SQLException();
+            jdbcTemplate.update("insert into test values(5)");
+            jdbcTemplate.update("insert into test values(6)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Integer> select() {
