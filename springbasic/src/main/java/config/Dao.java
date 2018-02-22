@@ -3,6 +3,7 @@ package config;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -22,18 +23,15 @@ public class Dao {
         jdbcTemplate.execute("drop table if exists test;create table test(id int primary key)");
     }
 
+    @Transactional
     public void insert() {
-        try {
-            jdbcTemplate.update("insert into test values(1)");
-            jdbcTemplate.update("insert into test values(2)");
-            jdbcTemplate.update("insert into test values(3)");
-            jdbcTemplate.update("insert into test values(4)");
-            if(true) throw new SQLException();
-            jdbcTemplate.update("insert into test values(5)");
-            jdbcTemplate.update("insert into test values(6)");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        jdbcTemplate.update("insert into test values(1)");
+        jdbcTemplate.update("insert into test values(2)");
+        jdbcTemplate.update("insert into test values(3)");
+        if(true) throw new RuntimeException();
+        jdbcTemplate.update("insert into test values(4)");
+        jdbcTemplate.update("insert into test values(5)");
+        jdbcTemplate.update("insert into test values(6)");
     }
 
     public List<Integer> select() {
