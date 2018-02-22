@@ -1,17 +1,19 @@
 import ab.Magician;
-import factory.MagicianFactory;
+import impl.FireMagician;
 import impl.IceMagician;
 import impl.LightMagician;
-
-import static factory.MagicianType.Fire;
-import static factory.MagicianType.Ice;
-import static factory.MagicianType.Light;
+import org.springframework.context.support.StaticApplicationContext;
 
 public class Main {
     public static void main(String[] args) {
-        Magician m1 = MagicianFactory.createMagician(Fire);
-        Magician m2 = MagicianFactory.createMagician(Ice);
-        Magician m3 = MagicianFactory.createMagician(Light);
+        StaticApplicationContext context = new StaticApplicationContext();
+        context.registerSingleton("m1", FireMagician.class);
+        context.registerSingleton("m2", IceMagician.class);
+        context.registerSingleton("m3", LightMagician.class);
+
+        Magician m1 = (Magician) context.getBean("m1");
+        Magician m2 = (Magician) context.getBean("m2");
+        Magician m3 = (Magician) context.getBean("m3");
 
         while(true) {
             m1.attack(m2);
