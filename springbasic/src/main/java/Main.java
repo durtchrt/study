@@ -1,13 +1,17 @@
 import ab.Magician;
-import impl.FireMagician;
+import factory.MagicianFactory;
 import impl.IceMagician;
 import impl.LightMagician;
 
+import static factory.MagicianType.Fire;
+import static factory.MagicianType.Ice;
+import static factory.MagicianType.Light;
+
 public class Main {
     public static void main(String[] args) {
-        Magician m1 = new FireMagician();
-        Magician m2 = new IceMagician();
-        Magician m3 = new LightMagician();
+        Magician m1 = MagicianFactory.createMagician(Fire);
+        Magician m2 = MagicianFactory.createMagician(Ice);
+        Magician m3 = MagicianFactory.createMagician(Light);
 
         while(true) {
             m1.attack(m2);
