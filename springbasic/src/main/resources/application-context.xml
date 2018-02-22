@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
-    <bean id="m1" class="impl.LightMagician" />
-    <bean id="m2" class="impl.IceMagician" />
-    <bean id="m3" class="impl.LightMagician" scope="prototype" />
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="m1" class="impl.LightMagician" init-method="init" destroy-method="destroy" >
+        <constructor-arg name="hp" value="100" />
+        <constructor-arg name="name" value="불마법사" />
+    </bean>
+    <bean id="m2" class="impl.IceMagician" init-method="init" destroy-method="destroy" >
+        <constructor-arg name="hp" value="100" />
+        <constructor-arg name="name" value="얼음마법사" />
+    </bean>
+
+    <!-- destroy method not support when bean scope are prototype. -->
+    <bean id="m3" class="impl.LightMagician" scope="prototype" init-method="init" destroy-method="destroy" >
+        <constructor-arg name="hp" value="100" />
+        <constructor-arg name="name" value="전기마법사" />
+    </bean>
 </beans>
