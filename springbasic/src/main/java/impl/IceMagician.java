@@ -4,7 +4,7 @@ import ab.Magician;
 
 public class IceMagician extends Magician {
 
-    protected IceMagician(int hp, String name) {
+    public IceMagician(int hp, String name) {
         super(hp, name);
     }
 

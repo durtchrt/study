@@ -1,11 +1,14 @@
 import ab.Magician;
+import config.Config;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        AbstractApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+
         Magician m1 = (Magician) context.getBean("m1");
         Magician m2 = (Magician) context.getBean("m2");
         Magician m3 = (Magician) context.getBean("m3");
