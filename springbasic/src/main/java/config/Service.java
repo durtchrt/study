@@ -13,12 +13,12 @@ public class Service {
     }
 
     public void serve() {
-
         try {
             dao.insert();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
+//        System.out.println("count: " + dao.select().size());
         dao.select().forEach(System.out::println);
     }
 }

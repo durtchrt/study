@@ -3,11 +3,18 @@ package config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
+@ComponentScan("config")
+@EnableAspectJAutoProxy
 public class Config {
     @Bean
     public DataSource dataSource() {
@@ -18,4 +25,10 @@ public class Config {
         config.setPassword("");
         return new HikariDataSource(config);
     }
+
+//    @Bean
+//    public PlatformTransactionManager txManager() {
+//        return new DataSourceTransactionManager(dataSource());
+//    }
+
 }

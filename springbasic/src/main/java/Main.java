@@ -1,3 +1,4 @@
+import config.Config;
 import config.Service;
 import org.h2.tools.Server;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -7,9 +8,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, SQLException {
         Server server = Server.createTcpServer().start();
 
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.scan("config");
-        context.refresh();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         Service service = context.getBean(Service.class);
         service.serve();
 
