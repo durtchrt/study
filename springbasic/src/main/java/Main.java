@@ -1,38 +1,44 @@
-import ab.Magician;
 import config.Config;
-import org.springframework.context.ApplicationContext;
+import org.h2.tools.Server;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, SQLException {
+
+//        jdbc:h2:tcp://localhost/~/test
+        Server server = Server.createTcpServer().start();
+
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        DataSource dataSource = context.getBean(DataSource.class);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("drop table if exists test;create table test(id int primary key)");
 
-        Magician m1 = (Magician) context.getBean("m1");
-        Magician m2 = (Magician) context.getBean("m2");
-        Magician m3 = (Magician) context.getBean("m3");
+        jdbcTemplate.update("insert into test values(1)");
+        jdbcTemplate.update("insert into test values(2)");
+        jdbcTemplate.update("insert into test values(3)");
+        jdbcTemplate.update("insert into test values(4)");
+        jdbcTemplate.update("insert into test values(5)");
+        jdbcTemplate.update("insert into test values(6)");
 
-        while(true) {
-            m1.attack(m2);
-            m2.attack(m3);
-            m3.attack(m1);
-            System.out.println(String.format("magician 1 HP : %d, magician 2 HP: %d, magician 3 HP: %d", m1.getHp(), m2.getHp(), m3.getHp()));
-            if(m1.isDie() ||  m2.isDie() || m3.isDie()) {
-                System.out.println("종료");
-                break;
+        List<Integer> list = jdbcTemplate.query("select id from test", new RowMapper<Integer>() {
+            @Override
+            public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getInt(1);
             }
-        }
+        });
 
-        Magician m11 = (Magician) context.getBean("m1");
-        Magician m33 = (Magician) context.getBean("m3");
-        System.out.println("m1 == m11 : " + (m1 == m11));
-        System.out.println("m3 == m33 : " + (m3 == m33));
+        list.forEach(System.out::println);
 
+        server.stop();
         context.close();
-//        context.registerShutdownHook();
-
-        Thread.sleep(1000);
         System.out.println("program exit");
 
     }

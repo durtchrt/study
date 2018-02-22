@@ -1,28 +1,21 @@
 package config;
 
-import ab.Magician;
-import impl.FireMagician;
-import impl.IceMagician;
-import impl.LightMagician;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class Config {
-
-    @Bean("m1")
-    public Magician createFireMagicion() {
-        return new FireMagician(100, "불마법사");
-    }
-
-    @Bean("m2")
-    public Magician createIceMagicion() {
-        return new IceMagician(100, "얼음마법사");
-    }
-
-    @Bean("m3")
-    public Magician createLightMagicion() {
-        return new LightMagician(100, "전기마법사");
+    @Bean
+    public DataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.h2.Driver");
+        config.setJdbcUrl("jdbc:h2:tcp://localhost/~/test;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE");
+        config.setUsername("sa");
+        config.setPassword("");
+        return new HikariDataSource(config);
     }
 }
