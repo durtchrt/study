@@ -1,4 +1,6 @@
-public class Magician {
+package ab;
+
+abstract public class Magician {
     private int hp = 100;
 
     public void decreaseHp(int hp) {
@@ -13,7 +15,5 @@ public class Magician {
         return this.hp;
     }
 
-    public void attack(Magician m) {
-        m.decreaseHp(10);
-    }
+    public abstract void attack(Magician m);
 }

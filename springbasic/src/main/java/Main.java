@@ -1,9 +1,13 @@
+import ab.Magician;
+import impl.FireMagician;
+import impl.IceMagician;
+import impl.LightMagician;
+
 public class Main {
     public static void main(String[] args) {
-        Magician m1 = new Magician();
-        Magician m2 = new Magician();
-        Magician m3 = new Magician();
-
+        Magician m1 = new FireMagician();
+        Magician m2 = new IceMagician();
+        Magician m3 = new LightMagician();
 
         while(true) {
             m1.attack(m2);
@@ -16,21 +20,4 @@ public class Main {
             }
         }
     }
-
-//    static int attackByLightningbolt() {
-//        System.out.println("라이트닝볼트 발사!!");
-//        return 20;
-//    }
-//
-//    static int attackByFireball() {
-//        System.out.println("파이어볼 발사!!");
-//        return 10;
-//    }
-//
-//
-//    static int attackByIceStorm() {
-//        System.out.println("아이스스톰 발사!!");
-//        return 15;
-//    }
-
 }
