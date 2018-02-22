@@ -1,5 +1,8 @@
 package ab;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 abstract public class Magician {
     //hp는 상태값이 바뀌어야함.
     private int hp;
@@ -10,10 +13,12 @@ abstract public class Magician {
         this.name = name;
     }
 
+    @PostConstruct
     public void init() {
         System.out.println(String.format("system info: %s가 생성되었습니다.", this.name));
     }
 
+    @PreDestroy
     public void destroy() {
         System.out.println(String.format("system info: %s가 제거되었습니다.", this.name));
     }
