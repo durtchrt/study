@@ -4,5 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
     <bean id="m1" class="impl.LightMagician" />
     <bean id="m2" class="impl.IceMagician" />
-    <bean id="m3" class="impl.LightMagician" />
+    <bean id="m3" class="impl.LightMagician" scope="prototype" />
 </beans>

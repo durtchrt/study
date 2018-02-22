@@ -8,7 +8,7 @@ import org.springframework.context.support.StaticApplicationContext;
 
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("/application-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
         Magician m1 = (Magician) context.getBean("m1");
         Magician m2 = (Magician) context.getBean("m2");
         Magician m3 = (Magician) context.getBean("m3");
