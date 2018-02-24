@@ -1,10 +1,12 @@
 package config;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.List;
 
 @Component
@@ -19,13 +21,16 @@ public class Dao {
         jdbcTemplate.execute("drop table if exists test;create table test(id int primary key)");
     }
 
+    @Transaction
     @LogExecutionTime
     public void insert() {
+        Connection con = DataSourceUtils.getConnection(this.jdbcTemplate.getDataSource());
+        System.out.println("::con>s" +con);
         jdbcTemplate.update("insert into test values(1)");
         jdbcTemplate.update("insert into test values(2)");
         jdbcTemplate.update("insert into test values(3)");
 //        throw 에러를 날리면 aop point cut이 못잡음
-//        if(true) throw new RuntimeException();
+        if(true) throw new RuntimeException();
         jdbcTemplate.update("insert into test values(4)");
         jdbcTemplate.update("insert into test values(5)");
         jdbcTemplate.update("insert into test values(6)");

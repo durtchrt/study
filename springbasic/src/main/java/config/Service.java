@@ -18,7 +18,7 @@ public class Service {
         } catch (Exception e) {
 //            e.printStackTrace();
         }
-//        System.out.println("count: " + dao.select().size());
+        System.out.println("count: " + dao.select().size());
         dao.select().forEach(System.out::println);
     }
 }
