@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("config")
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class Config {
     @Bean
     public DataSource dataSource() {
@@ -26,9 +27,9 @@ public class Config {
         return new HikariDataSource(config);
     }
 
-//    @Bean
-//    public PlatformTransactionManager txManager() {
-//        return new DataSourceTransactionManager(dataSource());
-//    }
+    @Bean
+    public PlatformTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
 
 }

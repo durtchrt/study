@@ -1,6 +1,7 @@
 package config;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 
@@ -15,8 +16,8 @@ public class Service {
     public void serve() {
         try {
             dao.insert();
-        } catch (Exception e) {
-//            e.printStackTrace();
+        }catch(Exception e) {
+            System.out.println("err: " + e);
         }
         System.out.println("count: " + dao.select().size());
         dao.select().forEach(System.out::println);

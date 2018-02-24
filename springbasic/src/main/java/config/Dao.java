@@ -3,6 +3,7 @@ package config;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -21,8 +22,7 @@ public class Dao {
         jdbcTemplate.execute("drop table if exists test;create table test(id int primary key)");
     }
 
-    @Transaction
-    @LogExecutionTime
+    @Transactional
     public void insert() {
         Connection con = DataSourceUtils.getConnection(this.jdbcTemplate.getDataSource());
         System.out.println("::con>s" +con);
