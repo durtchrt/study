@@ -41,6 +41,13 @@ public class Config {
         Properties prop = new Properties();
         prop.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         prop.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        prop.setProperty("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrateg");
+        //If the value of this property is true, Hibernate writes all SQL
+        //statements to the console.
+        prop.setProperty("hibernate.show_sql", "true" );
+        //If the value of this property is true, Hibernate will format the SQL
+        //that is written to the console.
+        prop.setProperty("hibernate.format_sql", "true");
         f.setJpaProperties(prop);
 //        f.setPackagesToScan(new String[]{"domain"});
         f.setPackagesToScan("domain");
@@ -48,7 +55,7 @@ public class Config {
     }
 
     // 이건 왜 넣는거지?
-    // 안넣어도 트랜젝션 됨...
+    // 안넣어도 트랜젝션 됨...jpa는 로직단에서 exception이 발생하면 트랜젝션을 아예 안동작시키네...
     @Bean
     public PersistenceExceptionTranslationPostProcessor postProcessor() {
         return new PersistenceExceptionTranslationPostProcessor();
