@@ -1,25 +1,33 @@
 package config;
 
+import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import repositories.UserRepository;
 
 import java.sql.SQLException;
 
-@Component
+//@Component
+@org.springframework.stereotype.Service
 public class Service {
-    private final Dao dao;
 
-    public Service(Dao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private UserRepository userRepo;
 
+//    public Service(UserRepository userRepo) {
+//        this.userRepo = userRepo;
+//    }
+
+    @Transactional
     public void serve() {
-        try {
-            dao.insert();
-        }catch(Exception e) {
-            System.out.println("err: " + e);
-        }
-        System.out.println("count: " + dao.select().size());
-        dao.select().forEach(System.out::println);
+        userRepo.save(new User("1"));
+        userRepo.save(new User("2"));
+        userRepo.save(new User("3"));
+        userRepo.save(new User("4"));
+        userRepo.save(new User("5"));
+
+        userRepo.findAll().forEach(System.out::println);
+
     }
 }

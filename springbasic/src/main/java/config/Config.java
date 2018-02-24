@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +23,7 @@ import java.util.Properties;
 @ComponentScan("config")
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = {"repositories"}, entityManagerFactoryRef = "efm")
 public class Config {
     @Bean
     public DataSource dataSource() {
@@ -56,15 +58,17 @@ public class Config {
 
     // 이건 왜 넣는거지?
     // 안넣어도 트랜젝션 됨...jpa는 로직단에서 exception이 발생하면 트랜젝션을 아예 안동작시키네...
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor postProcessor() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+//    @Bean
+//    public PersistenceExceptionTranslationPostProcessor postProcessor() {
+//        return new PersistenceExceptionTranslationPostProcessor();
+//    }
 
     @Bean
-    public JpaTransactionManager jtm(EntityManagerFactory efm) {
+    //bean name이 transactionManager로 등록되어있어야한다.
+    public JpaTransactionManager transactionManager(EntityManagerFactory efm) {
         JpaTransactionManager manager = new JpaTransactionManager();
         manager.setEntityManagerFactory(efm);
         return manager;
     }
+
 }
