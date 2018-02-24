@@ -1,42 +1,37 @@
 package config;
 
+import domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.List;
 
-@Component
+//@Component
+@Repository
 public class Dao {
-    private JdbcTemplate jdbcTemplate;
-    public Dao(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    @PostConstruct
-    private void init() {
-        jdbcTemplate.execute("drop table if exists test;create table test(id int primary key)");
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Transactional
     public void insert() {
-        Connection con = DataSourceUtils.getConnection(this.jdbcTemplate.getDataSource());
-        System.out.println("::con>s" +con);
-        jdbcTemplate.update("insert into test values(1)");
-        jdbcTemplate.update("insert into test values(2)");
-        jdbcTemplate.update("insert into test values(3)");
-//        throw 에러를 날리면 aop point cut이 못잡음
+        em.persist(new User("1"));
+        em.persist(new User("2"));
+        em.persist(new User("3"));
         if(true) throw new RuntimeException();
-        jdbcTemplate.update("insert into test values(4)");
-        jdbcTemplate.update("insert into test values(5)");
-        jdbcTemplate.update("insert into test values(6)");
+        em.persist(new User("4"));
+        em.persist(new User("5"));
     }
 
-    public List<Integer> select() {
-        return jdbcTemplate.query("select id from test", (resultSet, i) -> resultSet.getInt(1));
+    public List<User> select() {
+        return em.createQuery("select u from User u").getResultList();
     }
 }

@@ -31,10 +31,17 @@
             <!--<version>${spring-framework.version}</version>-->
         <!--</dependency>-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>2.0.4.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.2.13.Final</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -81,6 +88,13 @@
             <version>${aspectj.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -102,7 +116,9 @@
                 <configuration>
                     <mainClass>org.h2.tools.Console</mainClass>
                     <arguments>
-                        <argument>-browser</argument>
+                        <!-- server mode로 실행 -->
+                        <argument>-webAllowOthers</argument>
+                        <argument>-tcpAllowOthers</argument>
                     </arguments>
                 </configuration>
             </plugin>
